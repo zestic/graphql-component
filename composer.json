@@ -1,0 +1,23 @@
+{
+  "name": "zestic/graphql-component",
+  "type": "library",
+  "description": "GraqhQL component",
+  "keywords": ["GraphQl", "Zend Expressive"],
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1",
+    "youshido/graphql": "dev-master"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.3.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fixture\\": "tests/_data/fixture",
+      "Zestic\\GraphQL\\": "src/",
+      "Test\\Unit\\": "tests/unit",
+      "Test\\Functional\\": "tests/functional",
+      "Test\\Acceptance\\": "tests/acceptance"
+    }
+  }
+}
