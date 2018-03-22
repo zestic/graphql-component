@@ -6,18 +6,23 @@
   "license": "MIT",
   "require": {
     "php": ">=7.1",
-    "youshido/graphql": "dev-master"
+    "youshido/graphql": "dev-master",
+    "zendframework/zend-diactoros": "^1.7"
   },
   "require-dev": {
+    "codeception/aspect-mock": "dev-master",
     "codeception/codeception": "^2.3.8"
   },
   "autoload": {
     "psr-4": {
-      "Fixture\\": "tests/_data/fixture",
-      "Zestic\\GraphQL\\": "src/",
-      "Test\\Unit\\": "tests/unit",
-      "Test\\Functional\\": "tests/functional",
-      "Test\\Acceptance\\": "tests/acceptance"
+      "Zestic\\GraphQL\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Fixture\\": "tests/_support/fixture",
+      "Tests\\Functional\\": "tests/functional",
+      "Tests\\Unit\\": "tests/unit"
     }
   }
 }
