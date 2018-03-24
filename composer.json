@@ -6,7 +6,7 @@
   "license": "MIT",
   "require": {
     "php": ">=7.1",
-    "youshido/graphql": "dev-master",
+    "youshido/graphql": "^1.5",
     "zendframework/zend-diactoros": "^1.7"
   },
   "require-dev": {
