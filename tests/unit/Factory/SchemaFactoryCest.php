@@ -9,7 +9,7 @@ use Tests\Fixture\TestContainer;
 use Tests\Fixture\TestMutation;
 use UnitTester;
 use Zestic\Factory\SchemaFactory;
-use Zestic\GraphQL\Query\PingQuery;
+use Zestic\GraphQL\Query\Ping;
 
 class SchemaFactoryCest
 {
@@ -20,7 +20,7 @@ class SchemaFactoryCest
                 \Tests\Fixture\TestMutation::class
             ],
             'queries' => [
-                \Zestic\GraphQL\Query\PingQuery::class,
+                \Zestic\GraphQL\Query\Ping::class,
             ],
             'schema' => \Zestic\GraphQL\Schema::class,
         ];
@@ -33,8 +33,8 @@ class SchemaFactoryCest
                     return $config;
                 case \Tests\Fixture\TestMutation::class:
                     return new TestMutation();
-                case \Zestic\GraphQL\Query\PingQuery::class:
-                    return new PingQuery();
+                case \Zestic\GraphQL\Query\Ping::class:
+                    return new Ping();
             }
         };
         $containerMock = Mock::double(TestContainer::class, ['get' => $getReturn]);

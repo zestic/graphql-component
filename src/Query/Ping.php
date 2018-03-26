@@ -9,7 +9,7 @@ use Youshido\GraphQL\Field\AbstractField;
 use Youshido\GraphQL\Type\AbstractType;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;
 
-class PingQuery extends AbstractField
+class Ping extends AbstractField
 {
     /**
      * @return AbstractObjectType|AbstractType
