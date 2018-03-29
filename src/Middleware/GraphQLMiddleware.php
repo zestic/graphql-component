@@ -68,9 +68,9 @@ class GraphQLMiddleware implements MiddlewareInterface
 
         $this->processor->processPayload($query, $variables);
 
-        $res = $this->processor->getResponseData();
+        $response = $this->processor->getResponseData();
 
-        return new JsonResponse($res);
+        return new JsonResponse($response);
     }
 
     private function isGraphQLRequest(ServerRequestInterface $request)
