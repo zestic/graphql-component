@@ -9,6 +9,8 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class TestContainer implements ContainerInterface
 {
+    private $data = [];
+
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
@@ -21,7 +23,7 @@ class TestContainer implements ContainerInterface
      */
     public function get($id)
     {
-        // TODO: Implement get() method.
+        return $this->data[$id];
     }
 
     /**
@@ -37,6 +39,11 @@ class TestContainer implements ContainerInterface
      */
     public function has($id)
     {
-        // TODO: Implement has() method.
+        return isset($this->data[$id]);
+    }
+
+    public function set($id, $data)
+    {
+        $this->data[$id] = $data;
     }
 }
