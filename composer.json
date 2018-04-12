@@ -22,7 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Fixture\\": "tests/_support/fixture",
+      "Tests\\Fixture\\": "tests/_support/Fixture",
       "Tests\\Functional\\": "tests/functional",
       "Tests\\Unit\\": "tests/unit"
     }
