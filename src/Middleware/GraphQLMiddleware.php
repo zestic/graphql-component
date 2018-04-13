@@ -9,60 +9,41 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Youshido\GraphQL\Execution\Processor;
 use Zend\Diactoros\Response\JsonResponse;
+use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
 
 class GraphQLMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var string The graphql uri path to match against
-     */
+    /** @var array */
+    private $allowedMethods = [ "GET", "POST"];
+    /** @var ExtractJwtIntoContext */
+    private $extractJwtIntoContext;
+    /** @var array */
+    private $graphql_headers = ['application/graphql'];
+    /** @var string */
     private $graphql_uri;
-
-    /**
-     * @var array The graphql headers
-     */
-    private $graphql_headers = [
-        "application/graphql"
-    ];
-
-    /**
-     * @var array Allowed method for a graphql request, default GET, POST
-     */
-    private $allowed_methods = [
-        "GET", "POST"
-    ];
-
-    /**
-     * @var Processor
-     */
+    /** @var Processor */
     private $processor;
 
-    /**
-     * GraphQLMiddleware constructor.
-     *
-     * @param Processor $processor
-     * @param string    $graphql_uri
-     */
-    public function __construct(Processor $processor, $graphql_uri = '/graphql')
+    public function __construct(Processor $processor, $graphql_uri = '/graphql', ExtractJwtIntoContext $extractJwtIntoContext)
     {
+        $this->extractJwtIntoContext = $extractJwtIntoContext;
         $this->processor = $processor;
         $this->graphql_uri = $graphql_uri;
     }
 
-    /**
-     * Process an incoming server request and return a response, optionally delegating
-     * response creation to a handler.
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!$this->isGraphQLRequest($request)) {
             return $handler->handle($request);
         }
 
-        if (!in_array($request->getMethod(), $this->allowed_methods)){
+        if (!in_array($request->getMethod(), $this->allowedMethods)){
             return new JsonResponse([
-                "Method not allowed. Allowed methods are " . implode(", ", $this->allowed_methods)
+                "Method not allowed. Allowed methods are " . implode(", ", $this->allowedMethods)
             ], 405);
         }
+
+        $this->extractJwtIntoContext->extract($request, $this->processor->getExecutionContext());
 
         list($query, $variables) = $this->getPayload($request);
 

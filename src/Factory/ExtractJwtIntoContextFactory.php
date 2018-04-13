@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\Factory;
+namespace Zestic\GraphQL\Factory;
 
 use Psr\Container\ContainerInterface;
 use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
@@ -14,6 +14,7 @@ class ExtractJwtIntoContextFactory
         $jwtConfig = $config['jwt'];
         $publicKey = file_get_contents($jwtConfig['publicKeyPath']);
         $options = [
+            'algorithm' => $jwtConfig['algorithm'],
             'secret' => $publicKey,
         ];
 
