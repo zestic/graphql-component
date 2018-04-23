@@ -10,11 +10,18 @@
     "psr/container": "^1.0",
     "psr/log": "^1.0",
     "youshido/graphql": "^1.5",
-    "zendframework/zend-diactoros": "^1.7"
+    "zendframework/zend-diactoros": "^1.7",
+    "zestic/common": "*"
   },
   "require-dev": {
     "codeception/aspect-mock": "dev-master",
     "codeception/codeception": "^2.3.8"
+  },
+  "repositories": {
+    "zestic/common": {
+      "type": "vcs",
+      "url": "git@github.com:zestic/common.git"
+    }
   },
   "autoload": {
     "psr-4": {

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Factory;
 
-use ArrayObject;
 use Closure;
+use Common\Jwt\JwtConfiguration;
 use Tests\Fixture\TestContainer;
 use UnitTester;
 use Zestic\GraphQL\Factory\ExtractJwtIntoContextFactory;
@@ -16,16 +16,7 @@ class ExtractJwtIntoContextFactoryCest
     {
         $container = new TestContainer();
 
-        $jwtConfig = [
-            'jwt' => [
-                'algorithm' => 'RS256',
-                'privateKeyPath' => __DIR__ . '/../../_support/Fixture/jwt/private.pem',
-                'publicKeyPath' => __DIR__ . '/../../_support/Fixture/jwt/public.pem',
-                'tokenTtl' => 3600,
-            ],
-        ];
-        $config = new ArrayObject($jwtConfig);
-        $container->set('config', $config);
+        $container->set(JwtConfiguration::class, $this->getJwtConfiguration());
 
         $extractJwtIntoContext = (new ExtractJwtIntoContextFactory())->__invoke($container);
         $getOptions = function () {
@@ -56,5 +47,16 @@ VQUlL1F88OnApUKeJ+rOck2P7+X8v/keHzueR1GtGCnjukNjQW1AvmSQBQCWReei
 -----END PUBLIC KEY-----
 
 PUBLIC_KEY;
+    }
+
+    protected function getJwtConfiguration(): JwtConfiguration
+    {
+        $config = [
+            'algorithm' => 'RS256',
+            'publicKey' => $this->getExpectedPublicKey(),
+            'tokenTtl' => 3600,
+        ];
+
+        return new JwtConfiguration($config);
     }
 }
