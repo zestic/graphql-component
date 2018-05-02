@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Factory;
 
+use App\Jwt\JwtConfiguration;
 use Closure;
-use Common\Jwt\JwtConfiguration;
 use Tests\Fixture\TestContainer;
 use UnitTester;
 use Zestic\GraphQL\Factory\ExtractJwtIntoContextFactory;

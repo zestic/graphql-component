@@ -5,7 +5,7 @@
   "keywords": ["GraphQl", "Zend Expressive"],
   "license": "MIT",
   "require": {
-    "firebase/php-jwt": "^5.0",
+    "firebase/php-jwt": "v5.0.0",
     "php": ">=7.1",
     "psr/container": "^1.0",
     "psr/log": "^1.0",

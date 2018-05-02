@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Zestic\GraphQL\Factory;
 
-use Common\Jwt\JwtConfiguration;
+use App\Jwt\JwtConfiguration;
 use Psr\Container\ContainerInterface;
 use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
 

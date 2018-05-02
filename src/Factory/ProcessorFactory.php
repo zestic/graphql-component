@@ -1,14 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\Factory;
+namespace Zestic\GraphQL\Factory;
 
-use Youshido\GraphQL\Execution\Container\ContainerInterface;
+use App\Service\OperationMapping;
+use Common\Communique\Factory\CommuniqueFactory;
+use Psr\Container\ContainerInterface;
+use Youshido\GraphQL\Schema\AbstractSchema;
+use Zestic\GraphQL\Execution\Processor;
 
 class ProcessorFactory
 {
-    public function __invoke(ContainerInterface $container): Processor
+    public function __invoke(ContainerInterface $container, $requestedName): Processor
     {
-        // TODO: Implement __invoke() method.
+        $communiqueFactory = $container->get(CommuniqueFactory::class);
+        $operationMapping = $container->get(OperationMapping::class);
+        /** @var AbstractSchema $schema */
+        $schema = $container->get("graphql.schema");
+
+        $processor = new Processor($communiqueFactory, $operationMapping, $schema);
+
+        return $processor;
     }
 }
