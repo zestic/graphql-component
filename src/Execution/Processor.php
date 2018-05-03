@@ -4,7 +4,7 @@ namespace Zestic\GraphQL\Execution;
 
 use App\Service\OperationMapping;
 use Common\Communique\Factory\CommuniqueFactory;
-use GraphQLMiddleware\Execution\Context\ExecutionContext;
+use Zestic\GraphQL\Execution\Context\ExecutionContext;
 use GraphQLMiddleware\Validation\ValidatableFieldInterface;
 use Youshido\GraphQL\Execution\Processor as BaseProcessor;
 use Youshido\GraphQL\Field\FieldInterface;
