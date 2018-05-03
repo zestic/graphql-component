@@ -5,24 +5,30 @@
   "keywords": ["GraphQl", "Zend Expressive"],
   "license": "MIT",
   "require": {
-    "firebase/php-jwt": "v5.0.0",
     "php": ">=7.1",
+    "picr/diaclone": "dev-compli",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
     "youshido/graphql": "^1.5",
     "zendframework/zend-diactoros": "^1.7",
-    "zestic/common": "*"
+    "zestic/common": "*",
+    "firebase/php-jwt": "dev-master"
   },
   "require-dev": {
     "codeception/aspect-mock": "dev-master",
     "codeception/codeception": "^2.3.8"
   },
   "repositories": {
+    "picr/diaclone": {
+      "type": "vcs",
+      "url": "git@github.com:RecoveryOneOscar/diaclone.git"
+    },
     "zestic/common": {
       "type": "vcs",
       "url": "git@github.com:zestic/common.git"
     }
   },
+  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Zestic\\GraphQL\\": "src/"
