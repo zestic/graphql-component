@@ -5,14 +5,14 @@
   "keywords": ["GraphQl", "Zend Expressive"],
   "license": "MIT",
   "require": {
+    "firebase/php-jwt": "dev-master",
     "php": ">=7.1",
     "picr/diaclone": "dev-compli",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
-    "youshido/graphql": "^1.5",
+    "youshido/graphql": "*",
     "zendframework/zend-diactoros": "^1.7",
-    "zestic/common": "*",
-    "firebase/php-jwt": "dev-master"
+    "zestic/common": "*"
   },
   "require-dev": {
     "codeception/aspect-mock": "dev-master",
