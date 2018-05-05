@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Zestic\GraphQL\Factory;
 
-use GraphQLMiddleware\Exception\ServiceNotCreatedException;
 use Psr\Container\ContainerInterface;
+use Zestic\GraphQL\Exception\ServiceNotCreatedException;
 use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
 use Zestic\GraphQL\Middleware\GraphQLMiddleware;
 
