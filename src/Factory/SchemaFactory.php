@@ -1,15 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\Factory;
+namespace IamPersistent\GraphQL\Factory;
 
-use Youshido\GraphQL\Execution\Container\ContainerInterface;
-use IamPersistent\GraphQL\Schema;
+use GraphQL\Type\Schema as GraphQLSchema;
+use Psr\Container\ContainerInterface;
 
-class SchemaFactory
+final class SchemaFactory
 {
-    public function __invoke(ContainerInterface $container): Schema
+    public function __invoke(ContainerInterface $container): GraphQLSchema
     {
-        // TODO: Implement __invoke() method.
+        $schemaClass = $container->get('config')['graphQL']['schema'];
+
+        return new $schemaClass;
     }
 }
