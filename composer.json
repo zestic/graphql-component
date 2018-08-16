@@ -7,7 +7,6 @@
   "require": {
     "firebase/php-jwt": "dev-master",
     "php": ">=7.1",
-    "picr/diaclone": "dev-compli",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
     "zendframework/zend-diactoros": "^1.7",
@@ -18,10 +17,6 @@
     "codeception/codeception": "^2.3.8"
   },
   "repositories": {
-    "picr/diaclone": {
-      "type": "vcs",
-      "url": "git@github.com:RecoveryOneOscar/diaclone.git"
-    },
     "zestic/common": {
       "type": "vcs",
       "url": "git@github.com:zestic/common.git"
