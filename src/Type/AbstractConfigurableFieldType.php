@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL;
+namespace IamPersistent\GraphQL;
 
 use Youshido\GraphQL\Config\Object\ObjectTypeConfig;
 use Youshido\GraphQL\Type\Object\AbstractObjectType;

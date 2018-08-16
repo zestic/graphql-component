@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Factory;
+namespace IamPersistent\GraphQL\Factory;
 
 use App\Jwt\JwtConfiguration;
 use Psr\Container\ContainerInterface;
-use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
+use IamPersistent\GraphQL\Interactor\ExtractJwtIntoContext;
 
 class ExtractJwtIntoContextFactory
 {

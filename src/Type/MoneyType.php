@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Type;
+namespace IamPersistent\GraphQL\Type;
 
 use Youshido\GraphQL\Type\Scalar\AbstractScalarType;
 

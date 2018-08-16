@@ -9,7 +9,7 @@ use UnitTester;
 use Youshido\GraphQL\Execution\Container\Container;
 use Youshido\GraphQL\Execution\Context\ExecutionContext;
 use Zend\Diactoros\ServerRequest;
-use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
+use IamPersistent\GraphQL\Interactor\ExtractJwtIntoContext;
 
 class ExtractJwtIntoContextCest
 {

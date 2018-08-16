@@ -1,6 +1,6 @@
 <?php
 
-namespace Zestic\GraphQL\Execution\Context;
+namespace IamPersistent\GraphQL\Execution\Context;
 
 use Youshido\GraphQL\Execution\Container\Container;
 use Youshido\GraphQL\Execution\Context\ExecutionContext as BaseContext;

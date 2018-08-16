@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Factory;
+namespace IamPersistent\GraphQL\Factory;
 
 use App\Service\OperationMapping;
 use Common\Communique\Factory\CommuniqueFactory;
 use Psr\Container\ContainerInterface;
 use Youshido\GraphQL\Schema\AbstractSchema;
-use Zestic\GraphQL\Execution\Processor;
+use IamPersistent\GraphQL\Execution\Processor;
 
 class ProcessorFactory
 {

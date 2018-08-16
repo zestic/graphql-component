@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Exception;
+namespace IamPersistent\GraphQL\Exception;
 
 use Exception as BaseException;
 

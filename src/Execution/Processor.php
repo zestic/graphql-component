@@ -1,10 +1,10 @@
 <?php
 
-namespace Zestic\GraphQL\Execution;
+namespace IamPersistent\GraphQL\Execution;
 
 use App\Service\OperationMapping;
 use Common\Communique\Factory\CommuniqueFactory;
-use Zestic\GraphQL\Execution\Context\ExecutionContext;
+use IamPersistent\GraphQL\Execution\Context\ExecutionContext;
 use Youshido\GraphQL\Execution\Processor as BaseProcessor;
 use Youshido\GraphQL\Field\FieldInterface;
 use Youshido\GraphQL\Parser\Ast\Field as AstField;

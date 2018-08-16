@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL;
+namespace IamPersistent\GraphQL;
 
-use Zestic\GraphQL\Type\MutationType;
-use Zestic\GraphQL\Type\QueryType;
+use IamPersistent\GraphQL\Type\MutationType;
+use IamPersistent\GraphQL\Type\QueryType;
 use Youshido\GraphQL\Config\Schema\SchemaConfig;
 use Youshido\GraphQL\Schema\AbstractSchema;
 

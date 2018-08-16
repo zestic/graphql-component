@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Type;
+namespace IamPersistent\GraphQL\Type;
 
-use Zestic\GraphQL\AbstractConfigurableFieldType;
+use IamPersistent\GraphQL\AbstractConfigurableFieldType;
 
 class MutationType extends AbstractConfigurableFieldType
 {

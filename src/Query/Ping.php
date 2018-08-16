@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\GraphQL\Query;
+namespace IamPersistent\GraphQL\Query;
 
-use Zestic\GraphQL\Type\PingType;
+use IamPersistent\GraphQL\Type\PingType;
 use Youshido\GraphQL\Execution\ResolveInfo;
 use Youshido\GraphQL\Field\AbstractField;
 use Youshido\GraphQL\Type\AbstractType;

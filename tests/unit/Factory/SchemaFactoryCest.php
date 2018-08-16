@@ -8,8 +8,8 @@ use AspectMock\Test as Mock;
 use Tests\Fixture\TestContainer;
 use Tests\Fixture\TestMutation;
 use UnitTester;
-use Zestic\Factory\SchemaFactory;
-use Zestic\GraphQL\Query\Ping;
+use IamPersistent\Factory\SchemaFactory;
+use IamPersistent\GraphQL\Query\Ping;
 
 class SchemaFactoryCest
 {
@@ -20,9 +20,9 @@ class SchemaFactoryCest
                 \Tests\Fixture\TestMutation::class
             ],
             'queries' => [
-                \Zestic\GraphQL\Query\Ping::class,
+                \IamPersistent\GraphQL\Query\Ping::class,
             ],
-            'schema' => \Zestic\GraphQL\Schema::class,
+            'schema' => \IamPersistent\GraphQL\Schema::class,
         ];
         $getReturn = function ($id) use ($graphQLConfig) {
             $config = new ArrayObject([
@@ -33,7 +33,7 @@ class SchemaFactoryCest
                     return $config;
                 case \Tests\Fixture\TestMutation::class:
                     return new TestMutation();
-                case \Zestic\GraphQL\Query\Ping::class:
+                case \IamPersistent\GraphQL\Query\Ping::class:
                     return new Ping();
             }
         };

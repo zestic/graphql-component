@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Zestic\Factory;
+namespace IamPersistent\Factory;
 
 use Youshido\GraphQL\Execution\Container\ContainerInterface;
-use Zestic\GraphQL\Schema;
+use IamPersistent\GraphQL\Schema;
 
 class SchemaFactory
 {

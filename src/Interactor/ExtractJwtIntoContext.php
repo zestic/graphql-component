@@ -11,7 +11,7 @@ declare(strict_types=1);
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace Zestic\GraphQL\Interactor;
+namespace IamPersistent\GraphQL\Interactor;
 
 use DomainException;
 use Exception;
