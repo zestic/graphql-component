@@ -29,8 +29,11 @@ final class CommandContext
     public function getQuery(ResolveInfo $info)
     {
         $operation = $info->fieldName;
-        if (!isset($this->command[$operation]['query'])) {
+        if (!isset($this->commands[$operation]['query'])) {
             return null;
         }
+        $queryClass = $this->commands[$operation]['query'];
+
+        return new $queryClass($info->variableValues);
     }
 }
