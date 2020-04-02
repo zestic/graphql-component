@@ -5,19 +5,18 @@ namespace IamPersistent\GraphQL\Resolver;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use IamPersistent\GraphQL\Context\CommandContext;
-use Prooph\ServiceBus\CommandBus;
-use Prooph\ServiceBus\QueryBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class MasterResolver
 {
     /** @var array */
     private $commands = [];
-    /** @var CommandBus */
+    /** @var \Symfony\Component\Messenger\MessageBusInterface */
     private $commandBus;
-    /** @var QueryBus */
+    /** @var \Symfony\Component\Messenger\MessageBusInterface */
     private $queryBus;
 
-    public function __construct(CommandBus $commandBus, QueryBus $queryBus, CommandContext $commands)
+    public function __construct(MessageBusInterface $commandBus, MessageBusInterface $queryBus, CommandContext $commands)
     {
         $this->commandBus = $commandBus;
         $this->commands = $commands;
@@ -27,13 +26,17 @@ final class MasterResolver
     public function __invoke($val, $args, $context, ResolveInfo $info)
     {
         if ($command = $this->commands->getCommand($info)) {
-            $this->commandBus->dispatch($command);
+            $envelope = $this->commandBus->dispatch($command);
+
+            return $envelope->getMessage()->getResponse();
         }
 
         if ($query = $this->commands->getQuery($info)) {
-            return $this->queryBus->dispatch($query);
+            $envelope = $this->queryBus->dispatch($query);
+
+            return $envelope->getMessage()->getResponse();
         }
 
-        return $info->variableValues[$fieldName] ?? null;
+        return $info->variableValues[$info->fieldName] ?? null;
     }
 }

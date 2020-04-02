@@ -2,13 +2,14 @@
   "name": "iampersistent/graphql-component",
   "type": "library",
   "description": "GraqhQL component",
-  "keywords": ["GraphQl", "Zend Expressive"],
+  "keywords": ["GraqhQL", "Zend Expressive"],
   "license": "MIT",
   "require": {
     "firebase/php-jwt": "dev-master",
     "php": ">=7.1",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
+    "symfony/messenger": "^4.0 || ^5.0",
     "zendframework/zend-diactoros": "^1.7"
   },
   "require-dev": {
