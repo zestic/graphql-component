@@ -5,12 +5,12 @@
   "keywords": ["GraqhQL", "Zend Expressive"],
   "license": "MIT",
   "require": {
-    "firebase/php-jwt": "dev-master",
-    "php": ">=7.1",
+    "firebase/php-jwt": "^5.2.0",
+    "php": ">=7.4",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
     "symfony/messenger": "^4.0 || ^5.0",
-    "zendframework/zend-diactoros": "^1.7"
+    "laminas/laminas-diactoros": "^1.7"
   },
   "require-dev": {
     "codeception/aspect-mock": "dev-master",

@@ -15,6 +15,8 @@ final class MasterResolver
     private $commandBus;
     /** @var \Symfony\Component\Messenger\MessageBusInterface */
     private $queryBus;
+    /** @var mixed */
+    private $response;
 
     public function __construct(MessageBusInterface $commandBus, MessageBusInterface $queryBus, CommandContext $commands)
     {
@@ -25,18 +27,26 @@ final class MasterResolver
 
     public function __invoke($val, $args, $context, ResolveInfo $info)
     {
+        if (isset($this->response[$info->fieldName])) {
+            return $this->response[$info->fieldName];
+        }
+
         if ($command = $this->commands->getCommand($info)) {
             $envelope = $this->commandBus->dispatch($command);
 
-            return $envelope->getMessage()->getResponse();
+            $this->response = $envelope->getMessage()->getResponse();
+
+            return $this->response;
         }
 
         if ($query = $this->commands->getQuery($info)) {
             $envelope = $this->queryBus->dispatch($query);
 
-            return $envelope->getMessage()->getResponse();
+            $this->response = $envelope->getMessage()->getResponse();
+
+            return $this->response;
         }
 
-        return $info->variableValues[$info->fieldName] ?? null;
+        return null;
     }
 }
