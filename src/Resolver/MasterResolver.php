@@ -27,8 +27,8 @@ final class MasterResolver
 
     public function __invoke($val, $args, $context, ResolveInfo $info)
     {
-        if (isset($this->response[$info->fieldName])) {
-            return $this->response[$info->fieldName];
+        if (isset($val[$info->fieldName])) {
+            return $val[$info->fieldName];
         }
 
         if ($command = $this->commands->getCommand($info)) {
