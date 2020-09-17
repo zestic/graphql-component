@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace IamPersistent\GraphQL\Factory;
 
+use IamPersistent\GraphQL\Handler\RequestDispatcher;
 use Psr\Container\ContainerInterface;
-use IamPersistent\GraphQL\Context\CommandContext;
 use IamPersistent\GraphQL\Resolver\MasterResolver;
 
 final class MasterResolverFactory
 {
     public function __invoke(ContainerInterface $container): MasterResolver
     {
-        $commandBus = $container->get('messenger.command.bus');
-        $queryBus = $container->get('messenger.query.bus');
-        $commandContext = new CommandContext($container->get('config')['graphQL']['commands']);
+        $requestDispatcher = $container->get(RequestDispatcher::class);
 
-        return new MasterResolver($commandBus, $queryBus, $commandContext);
+        return new MasterResolver($requestDispatcher);
     }
 }
