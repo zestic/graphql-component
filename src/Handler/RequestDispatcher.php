@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace IamPersistent\GraphQL\Handler;
 
-use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ResolveInfo;
 use IamPersistent\GraphQL\GraphQLMessage;
 use Symfony\Component\Messenger\Envelope;
@@ -47,18 +46,5 @@ final class RequestDispatcher
         $messageClass = $this->messages[$operation]['message'];
 
         return new $messageClass($info);
-    }
-
-    public function getQuery(ResolveInfo $info)
-    {
-        $operation = $info->fieldName;
-        $returnNodes = $info->fieldNodes;
-        if (!isset($this->messages[$operation]['query'])) {
-            return null;
-        }
-        $queryClass = $this->messages[$operation]['query'];
-        $expectedReturn = $this->getExpectedReturn($info);
-
-        return new $queryClass($info->variableValues, $expectedReturn);
     }
 }
