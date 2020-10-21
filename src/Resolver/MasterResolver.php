@@ -18,7 +18,7 @@ final class MasterResolver
 
     public function __invoke($val, $args, $context, ResolveInfo $info)
     {
-        if (isset($val[$info->fieldName])) {
+        if ($val && array_key_exists($info->fieldName, $val)) {
             return $val[$info->fieldName];
         }
 
