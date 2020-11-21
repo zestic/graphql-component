@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace IamPersistent\GraphQL;
 
-use App\Domain\Locator\MessengerBusLocatorFactory;
+use IamPersistent\GraphQL\Locator\MessengerBusLocatorFactory;
 use IamPersistent\GraphQL\Locator\MutationBusLocator;
 use IamPersistent\GraphQL\Locator\QueryBusLocator;
 use Netglue\PsrContainer\Messenger\Container\MessageBusStaticFactory;
