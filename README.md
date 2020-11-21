@@ -7,18 +7,21 @@ All messages must extend GraphQLMessage
 
 Config
 ```
- 'graphQL'      => [
-    'buses'       => [
-        'mutations' => 'messenger.command.bus',
-        'queries'   => 'messenger.query.bus',
-    ],
+'graphQL'      => [
     'mutations'    => [
-        'addEmailToList'   => App\Domain\Message\Mutation\AddEmailToList::class,
+        'addEmailToList'   => App\Domain\Message\Mutation\AddEmailToListMessage::class,
+        'addEmailToList'                    =>  [
+            'bus' => 'messenger.not-default-bus', \\ optional
+            'handler' => App\Domain\Handler\Mutation\AddEmailToListHandler::class,
+            'message' => App\Domain\Message\Mutation\AddEmailToListMessage::class,
+        ],
     ],
     'queries'      => [
-       'ping'                    =>  [
-            'config' => 'messenger.not-default-bus',
+        'ping'                    =>  [
+            'bus' => 'messenger.not-default-bus', \\ optional
+            'handler' => App\Domain\Handler\Query\PingHandler::class,
             'message' => App\Domain\Message\Query\PingMessage::class,
+        ],
     ],
     'middleware'   => [
         'allowedHeaders' => [
@@ -27,8 +30,21 @@ Config
         ],
     ],
     'schema'       => App\GraphQL\Schema::class,
-    'serverConfig' => [
-        'fieldResolver' => IamPersistent\GraphQL\Resolver\MasterResolver::class,
-    ],
- ]
+];
 ```
+
+In `config.php` add the `ConfigProcess.php` class to the post processors
+
+```php 
+$postProcessors = [
+    \IamPersistent\GraphQL\ConfigProcessor::class,
+];
+$aggregator = new ConfigAggregator([
+        ...
+    ], $cacheConfig['config_cache_path'], $postProcessors); 
+
+return $aggregator->getMergedConfig();
+```
+
+This will wire up the connections between the handlers and messages in Symfony Messenger
+and it also builds the config for `the RequestDispatcher`
