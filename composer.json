@@ -2,11 +2,18 @@
   "name": "iampersistent/graphql-component",
   "type": "library",
   "description": "GraqhQL component",
-  "keywords": ["GraqhQL", "Zend Expressive"],
+  "keywords": [
+    "GraqhQL",
+    "Laminas"
+  ],
   "license": "MIT",
+  "config": {
+    "sort-packages": true
+  },
   "require": {
+    "php": ">=7.4 || ^8.0",
     "firebase/php-jwt": "^5.2.0",
-    "php": ">=7.4",
+    "iampersistent/webonxy-middleware": "^0.3",
     "psr/container": "^1.0",
     "psr/log": "^1.0",
     "laminas/laminas-diactoros": "^2.6",
@@ -15,8 +22,6 @@
   "require-dev": {
     "codeception/codeception": "^4.1.6",
     "codeception/module-asserts": "^1.0.0"
-  },
-  "repositories": {
   },
   "minimum-stability": "dev",
   "autoload": {
