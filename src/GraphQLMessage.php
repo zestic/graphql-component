@@ -9,6 +9,8 @@ use ReflectionProperty;
 
 abstract class GraphQLMessage
 {
+    /** @var array|null */
+    protected $context;
     /** @var array */
     protected $expectedReturn;
     /** @var mixed */
@@ -18,8 +20,9 @@ abstract class GraphQLMessage
     /** @var \GraphQL\Language\AST\NodeList[] */
     private $returnNodes;
 
-    public function __construct(ResolveInfo $info)
+    public function __construct(ResolveInfo $info, $context)
     {
+        $this->context = $context;
         foreach ($info->variableValues as $property => $value) {
             $reflectionProperty = new ReflectionProperty($this, $property);
             $reflectionProperty->setAccessible(true);
@@ -28,6 +31,11 @@ abstract class GraphQLMessage
         }
         $this->operation = $info->fieldName;
         $this->returnNodes = $info->fieldNodes->getArrayCopy();
+    }
+
+    public function getContext(): ?array
+    {
+        return $this->context;
     }
 
     public function getExpectedReturn(): array

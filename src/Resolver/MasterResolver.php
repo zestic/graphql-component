@@ -22,6 +22,6 @@ final class MasterResolver
             return $val[$info->fieldName];
         }
 
-        return $this->dispatcher->handle($info);
+        return $this->dispatcher->handle($info, $context);
     }
 }

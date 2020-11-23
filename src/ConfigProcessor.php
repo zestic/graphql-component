@@ -60,8 +60,6 @@ final class ConfigProcessor
                 \IamPersistent\GraphQL\Factory\RequestDispatcherFactory::class,
             \IamPersistent\GraphQL\Resolver\MasterResolver::class   =>
                 \IamPersistent\GraphQL\Factory\MasterResolverFactory::class,
-            \GraphQL\Type\Schema::class                              =>
-                \IamPersistent\GraphQL\Factory\SchemaFactory::class,
         ];
         $config['dependencies']['factories'] =
             array_merge($config['dependencies']['factories'], $newConfigs);

@@ -28,16 +28,16 @@ final class RequestDispatcher
         return $this->buses[$bus]->dispatch($message);
     }
 
-    public function handle(ResolveInfo $info)
+    public function handle(ResolveInfo $info, $context)
     {
-        $message = $this->getMessage($info);
+        $message = $this->getMessage($info, $context);
 
         $envelope = $this->dispatch($message);
 
         return $envelope->getMessage()->getResponse();
     }
 
-    public function getMessage(ResolveInfo $info)
+    public function getMessage(ResolveInfo $info, $context)
     {
         $operation = $info->fieldName;
         if (!isset($this->messages[$operation])) {
@@ -45,6 +45,6 @@ final class RequestDispatcher
         }
         $messageClass = $this->messages[$operation]['message'];
 
-        return new $messageClass($info);
+        return new $messageClass($info, $context);
     }
 }
