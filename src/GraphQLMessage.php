@@ -5,14 +5,15 @@ namespace IamPersistent\GraphQL;
 
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ResolveInfo;
+use IamPersistent\GraphQL\ExpectedReturn\Field;
 use ReflectionProperty;
 
 abstract class GraphQLMessage
 {
     /** @var array|null */
     protected $context;
-    /** @var array */
-    protected $expectedReturn;
+    /** @var \IamPersistent\GraphQL\ExpectedReturn[] */
+    protected $expectedReturns = [];
     /** @var mixed */
     protected $response;
     /** @var string */
@@ -38,13 +39,27 @@ abstract class GraphQLMessage
         return $this->context;
     }
 
-    public function getExpectedReturn(): array
+    public function setErrorResponse(string $message)
     {
-        if (empty($this->expectedReturn)) {
+
+    }
+
+    public function getExpectedReturn(string $name): ?ExpectedReturn
+    {
+        if (empty($this->expectedReturns)) {
             $this->buildExpectedReturn();
         }
 
-        return $this->expectedReturn;
+        return $this->expectedReturns[$name];
+    }
+
+    public function getExpectedReturns(): array
+    {
+        if (empty($this->expectedReturns)) {
+            $this->buildExpectedReturn();
+        }
+
+        return $this->expectedReturns;
     }
 
     public function getOperation(): string
@@ -65,26 +80,31 @@ abstract class GraphQLMessage
     private function buildExpectedReturn()
     {
         foreach ($this->returnNodes as $node) {
-            if ($this->operation === $node->name->value) {
-                $this->expectedReturn = $this->extractFromSelections($node->selectionSet->selections);
-
-                return;
+            $name = $node->name->value;
+            if ($this->operation === $name) {
+                $fields = $this->extractFromSelections($node->selectionSet->selections);
+                $this->expectedReturns[$name] = new ExpectedReturn($name, $fields);
             }
         }
     }
 
     private function extractFromSelections(NodeList $selections): array
     {
-        $data = [];
+        $fields = [];
         foreach ($selections as $node) {
             $name = $node->name->value;
-            if ($node->selectionSet) {
-                $data[$name] = $this->extractFromSelections($node->selectionSet->selections);
-            } else {
-                $data[$name] = null;
+            if ('__typename' === $name) {
+                continue;
             }
+            if ($node->selectionSet) {
+                $children = $this->extractFromSelections($node->selectionSet->selections);
+            } else {
+                $children = [];
+            }
+
+            $fields[] = new Field($name, $children);
         }
 
-        return $data;
+        return $fields;
     }
 }
