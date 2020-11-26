@@ -18,10 +18,13 @@ final class MasterResolver
 
     public function __invoke($val, $args, $context, ResolveInfo $info)
     {
+        if (!$val) {
+            return $this->dispatcher->handle($info, $context);
+        }
         if ($val && array_key_exists($info->fieldName, $val)) {
             return $val[$info->fieldName];
         }
 
-        return $this->dispatcher->handle($info, $context);
+        return $val;
     }
 }
