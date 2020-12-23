@@ -6,7 +6,7 @@ namespace IamPersistent\GraphQL\ExpectedReturn;
 class Field
 {
     /** @var Field[] */
-    private $fields;
+    protected $fields;
     /** @var string */
     private $name;
 

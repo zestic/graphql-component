@@ -87,7 +87,7 @@ final class ConfigProcessor
     {
         $buses = [
             'messenger.graphql.mutation.bus' => $this->mutationConfig($config),
-            'messenger.graphql.query.bus' => $this->queryConfig($config),
+            'messenger.graphql.query.bus'    => $this->queryConfig($config),
         ];
         if ($config['symfony']['messenger']['buses']) {
             $buses = array_merge($config['symfony']['messenger']['buses'], $buses);

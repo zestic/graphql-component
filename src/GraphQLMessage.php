@@ -102,7 +102,7 @@ abstract class GraphQLMessage
                 $children = [];
             }
 
-            $fields[] = new Field($name, $children);
+            $fields[$name] = new Field($name, $children);
         }
 
         return $fields;
