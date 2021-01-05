@@ -39,6 +39,11 @@ abstract class GraphQLMessage
         return $this->context;
     }
 
+    public function getContextValue(string $key)
+    {
+        return $this->context[$key] ?? null;
+    }
+
     public function setErrorResponse(string $message)
     {
 
