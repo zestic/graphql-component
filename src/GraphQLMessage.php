@@ -16,6 +16,8 @@ abstract class GraphQLMessage
     protected $expectedReturns = [];
     /** @var mixed */
     protected $response;
+    /** @var array */
+    private $data = [];
     /** @var string */
     private $operation;
     /** @var \GraphQL\Language\AST\NodeList[] */
@@ -29,6 +31,7 @@ abstract class GraphQLMessage
             $reflectionProperty->setAccessible(true);
             $reflectionProperty->setValue($this, $value);
             $reflectionProperty->setAccessible(false);
+            $this->data[$property] = $value;
         }
         $this->operation = $info->fieldName;
         $this->returnNodes = $info->fieldNodes->getArrayCopy();
@@ -42,6 +45,11 @@ abstract class GraphQLMessage
     public function getContextValue(string $key)
     {
         return $this->context[$key] ?? null;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
     }
 
     public function setErrorResponse(string $message)

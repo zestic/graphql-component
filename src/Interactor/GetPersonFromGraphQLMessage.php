@@ -17,6 +17,6 @@ final class GetPersonFromGraphQLMessage
     {
         $personId = $messaage->getContextValue('personId');
 
-        $this->findPersonById->find($personId);
+        return $this->findPersonById->find($personId);
     }
 }
