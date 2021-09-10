@@ -26,13 +26,8 @@ abstract class GraphQLMessage
     public function __construct(ResolveInfo $info, $context)
     {
         $this->context = $context;
-        foreach ($info->variableValues as $property => $value) {
-            $reflectionProperty = new ReflectionProperty($this, $property);
-            $reflectionProperty->setAccessible(true);
-            $reflectionProperty->setValue($this, $value);
-            $reflectionProperty->setAccessible(false);
-            $this->data[$property] = $value;
-        }
+        $this->setDataValues($info->variableValues);
+        $this->setPropertyValues($this, $info->variableValues);
         $this->operation = $info->fieldName;
         $this->returnNodes = $info->fieldNodes->getArrayCopy();
     }
@@ -119,5 +114,36 @@ abstract class GraphQLMessage
         }
 
         return $fields;
+    }
+
+    private function setDataValues($values)
+    {
+        foreach ($values as $property => $value) {
+            $this->data[$property] = $value;
+        }
+    }
+
+    private function setPropertyValues($object, $values)
+    {
+        foreach ($values as $property => $rawValue) {
+            $reflectionProperty = new ReflectionProperty($object, $property);
+            $reflectionProperty->setAccessible(true);
+            $value = $this->getValue($reflectionProperty, $rawValue);
+            $reflectionProperty->setValue($object, $value);
+            $reflectionProperty->setAccessible(false);
+        }
+    }
+
+    private function getValue(ReflectionProperty $rp, $rawValue)
+    {
+        $type = $rp->getType()->getName();
+        if (!class_exists($type)) {
+            return $rawValue;
+        }
+
+        $object = new $type();
+        $this->setPropertyValues($object, $rawValue);
+
+        return $object;
     }
 }
