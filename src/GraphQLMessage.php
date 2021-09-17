@@ -136,8 +136,8 @@ abstract class GraphQLMessage
 
     private function getValue(ReflectionProperty $rp, $rawValue)
     {
-        $type = $rp->getType()->getName();
-        if (!class_exists($type)) {
+        $type = $rp->getType()?->getName();
+        if (!$type || !class_exists($type)) {
             return $rawValue;
         }
 
