@@ -27,7 +27,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "IamPersistent\\GraphQL\\": "src/"
+      "Zestic\\GraphQL\\": "src/"
     }
   },
   "autoload-dev": {
