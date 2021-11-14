@@ -37,7 +37,7 @@ In `config.php` add the `ConfigProcess.php` class to the post processors
 
 ```php 
 $postProcessors = [
-    \IamPersistent\GraphQL\ConfigProcessor::class,
+    \Zestic\GraphQL\ConfigProcessor::class,
 ];
 $aggregator = new ConfigAggregator([
         ...

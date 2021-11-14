@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Factory;
+namespace Zestic\GraphQL\Factory;
 
-use IamPersistent\GraphQL\Handler\RequestDispatcher;
 use Psr\Container\ContainerInterface;
-use IamPersistent\GraphQL\Resolver\MasterResolver;
+use Zestic\GraphQL\Handler\RequestDispatcher;
+use Zestic\GraphQL\Resolver\MasterResolver;
 
 final class MasterResolverFactory
 {

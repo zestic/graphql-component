@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL;
+namespace Zestic\GraphQL;
 
-use IamPersistent\GraphQL\Locator\MessengerBusLocatorFactory;
-use IamPersistent\GraphQL\Locator\MutationBusLocator;
-use IamPersistent\GraphQL\Locator\QueryBusLocator;
 use Netglue\PsrContainer\Messenger\Container\MessageBusStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageHandlerMiddlewareStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageSenderMiddlewareStaticFactory;
+use Zestic\GraphQL\Locator\MessengerBusLocatorFactory;
+use Zestic\GraphQL\Locator\MutationBusLocator;
+use Zestic\GraphQL\Locator\QueryBusLocator;
 
 final class ConfigProcessor
 {
@@ -56,10 +56,10 @@ final class ConfigProcessor
                 new MessengerBusLocatorFactory(
                 'messenger.graphql.query.bus'
             ),
-            \IamPersistent\GraphQL\Handler\RequestDispatcher::class =>
-                \IamPersistent\GraphQL\Factory\RequestDispatcherFactory::class,
-            \IamPersistent\GraphQL\Resolver\MasterResolver::class   =>
-                \IamPersistent\GraphQL\Factory\MasterResolverFactory::class,
+            \Zestic\GraphQL\Handler\RequestDispatcher::class =>
+                \Zestic\GraphQL\Factory\RequestDispatcherFactory::class,
+            \Zestic\GraphQL\Resolver\MasterResolver::class   =>
+                \Zestic\GraphQL\Factory\MasterResolverFactory::class,
         ];
         $config['dependencies']['factories'] =
             array_merge($config['dependencies']['factories'], $newConfigs);
@@ -77,7 +77,7 @@ final class ConfigProcessor
         }
 
         if (!isset($config['graphQL']['serverConfig']['fieldResolver'])) {
-            $config['graphQL']['serverConfig']['fieldResolver'] = \IamPersistent\GraphQL\Resolver\MasterResolver::class;
+            $config['graphQL']['serverConfig']['fieldResolver'] = \Zestic\GraphQL\Resolver\MasterResolver::class;
         }
 
         return $config;

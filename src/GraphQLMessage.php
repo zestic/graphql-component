@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL;
+namespace Zestic\GraphQL;
 
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ResolveInfo;
-use IamPersistent\GraphQL\ExpectedReturn\Field;
 use ReflectionProperty;
+use Zestic\GraphQL\ExpectedReturn\Field;
 
 abstract class GraphQLMessage
 {
     /** @var array|null */
     protected $context;
-    /** @var \IamPersistent\GraphQL\ExpectedReturn[] */
+    /** @var \Zestic\GraphQL\ExpectedReturn[] */
     protected $expectedReturns = [];
     /** @var mixed */
     protected $response;

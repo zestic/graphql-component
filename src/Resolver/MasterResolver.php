@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Resolver;
+namespace Zestic\GraphQL\Resolver;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use IamPersistent\GraphQL\Handler\RequestDispatcher;
+use Zestic\GraphQL\Handler\RequestDispatcher;
 
 final class MasterResolver
 {
-    /** @var \IamPersistent\GraphQL\Handler\RequestDispatcher */
+    /** @var \Zestic\GraphQL\Handler\RequestDispatcher */
     private $dispatcher;
 
     public function __construct(RequestDispatcher $dispatcher)

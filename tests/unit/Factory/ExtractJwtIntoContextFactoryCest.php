@@ -7,8 +7,8 @@ use App\Jwt\JwtConfiguration;
 use Closure;
 use Tests\Fixture\TestContainer;
 use UnitTester;
-use IamPersistent\GraphQL\Factory\ExtractJwtIntoContextFactory;
-use IamPersistent\GraphQL\Interactor\ExtractJwtIntoContext;
+use Zestic\GraphQL\Factory\ExtractJwtIntoContextFactory;
+use Zestic\GraphQL\Interactor\ExtractJwtIntoContext;
 
 class ExtractJwtIntoContextFactoryCest
 {

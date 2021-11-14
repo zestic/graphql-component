@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Exception;
+namespace Zestic\GraphQL\Exception;
 
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException as SplRuntimeException;

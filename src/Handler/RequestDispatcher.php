@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Handler;
+namespace Zestic\GraphQL\Handler;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use IamPersistent\GraphQL\GraphQLMessage;
 use Symfony\Component\Messenger\Envelope;
+use Zestic\GraphQL\GraphQLMessage;
 
 final class RequestDispatcher
 {

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Interactor;
+namespace Zestic\GraphQL\Interactor;
 
-use IamPersistent\GraphQL\GraphQLMessage;
 use Zestic\Contracts\User\FindUserByIdInterface;
 use Zestic\Contracts\User\UserInterface;
+use Zestic\GraphQL\GraphQLMessage;
 
 final class GetUserFromGraphQLMessage
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\ExpectedReturn;
+namespace Zestic\GraphQL\ExpectedReturn;
 
 class Field
 {

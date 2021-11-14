@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Factory;
+namespace Zestic\GraphQL\Factory;
 
-use IamPersistent\GraphQL\Handler\RequestDispatcher;
 use Psr\Container\ContainerInterface;
+use Zestic\GraphQL\Handler\RequestDispatcher;
 
 final class RequestDispatcherFactory
 {

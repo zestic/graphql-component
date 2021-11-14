@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Handler\Query;
+namespace Zestic\GraphQL\Handler\Query;
 
-use IamPersistent\GraphQL\Message\Query\PingMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Zestic\GraphQL\Message\Query\PingMessage;
 
 final class PingHandler implements MessageHandlerInterface
 {

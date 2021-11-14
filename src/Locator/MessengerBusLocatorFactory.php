@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Locator;
+namespace Zestic\GraphQL\Locator;
 
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Netglue\PsrContainer\Messenger\Container\MessageBusOptionsRetrievalBehaviour;

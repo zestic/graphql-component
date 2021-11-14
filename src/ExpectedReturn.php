@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL;
+namespace Zestic\GraphQL;
 
-use IamPersistent\GraphQL\ExpectedReturn\Field;
+use Zestic\GraphQL\ExpectedReturn\Field;
 
 final class ExpectedReturn extends Field
 {

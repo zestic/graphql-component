@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Fixture;
 
-use IamPersistent\GraphQL\Traits\VariableInjectionTrait;
+use Zestic\GraphQL\Traits\VariableInjectionTrait;
 
 final class VariableInjectionTestClass
 {

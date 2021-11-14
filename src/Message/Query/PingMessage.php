@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace IamPersistent\GraphQL\Message\Query;
+namespace Zestic\GraphQL\Message\Query;
 
-use IamPersistent\GraphQL\GraphQLMessage;
+use Zestic\GraphQL\GraphQLMessage;
 
 final class PingMessage extends GraphQLMessage
 {
