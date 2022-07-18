@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Zestic\GraphQL;
 
+use GraphQL\Error\Error;
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ResolveInfo;
 use ReflectionProperty;
@@ -12,12 +13,12 @@ abstract class GraphQLMessage
 {
     /** @var array|null */
     protected $context;
+    protected string|null $errorResponse = null;
     /** @var \Zestic\GraphQL\ExpectedReturn[] */
-    protected $expectedReturns = [];
+    protected array $expectedReturns = [];
     /** @var mixed */
     protected $response;
-    /** @var array */
-    private $data = [];
+    private array $data = [];
     /** @var string */
     private $operation;
     /** @var \GraphQL\Language\AST\NodeList[] */
@@ -49,7 +50,7 @@ abstract class GraphQLMessage
 
     public function setErrorResponse(string $message)
     {
-
+        $this->errorResponse = $message;
     }
 
     public function getExpectedReturn(string $name): ?ExpectedReturn
@@ -77,6 +78,10 @@ abstract class GraphQLMessage
 
     public function getResponse()
     {
+        if ($this->errorResponse) {
+            throw new Error($this->errorResponse);
+        }
+
         return $this->response;
     }
 
