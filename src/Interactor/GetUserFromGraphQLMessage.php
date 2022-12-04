@@ -13,15 +13,15 @@ final class GetUserFromGraphQLMessage
         private FindUserByIdInterface $findUserById
     ) { }
 
-    public function getActor(GraphQLMessage $messaage): ?UserInterface
+    public function getActor(GraphQLMessage $message): ?UserInterface
     {
         $userId = $this->getId($message);
         
         return $this->findUserById->find($userId);
     }
     
-    public function getId(GraphQLMessage $messaage)
+    public function getId(GraphQLMessage $message)
     {
-        return $messaage->getContextValue('userId');
+        return $message->getContextValue('userId');
     }
 }
