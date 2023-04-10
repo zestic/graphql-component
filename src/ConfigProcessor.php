@@ -104,6 +104,20 @@ final class ConfigProcessor
         return $config;
     }
 
+    private function getHandlers(array $operations): array
+    {
+        $handlers = [];
+        foreach ($operations as $key => $operation) {
+            $operationHandlers = $operation['handlers'];
+            if (!is_array($operationHandlers)) {
+                $operationHandlers = [$operationHandlers];
+            }
+            $handlers[$operation['message']] = $operationHandlers;
+        }
+
+        return $handlers;
+    }
+
     private function mutationConfig(array $config): array
     {
         return [
@@ -142,19 +156,5 @@ final class ConfigProcessor
     private function queryHandlersConfig(array $config): array
     {
         return $this->getHandlers($config['graphQL']['queries']);
-    }
-
-    private function getHandlers(array $operations): array
-    {
-        $handlers = [];
-        foreach ($operations as $key => $operation) {
-            $operationHandlers = $operation['handlers'];
-            if (!is_array($operationHandlers)) {
-                $operationHandlers = [$operationHandlers];
-            }
-            $handlers[$operation['message']] = $operationHandlers;
-        }
-
-        return $handlers;
     }
 }
