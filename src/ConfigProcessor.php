@@ -6,9 +6,8 @@ namespace Zestic\GraphQL;
 use Netglue\PsrContainer\Messenger\Container\MessageBusStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageHandlerMiddlewareStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageSenderMiddlewareStaticFactory;
+use Netglue\PsrContainer\Messenger\HandlerLocator\OneToManyFqcnContainerHandlerLocator;
 use Zestic\GraphQL\Locator\MessengerBusLocatorFactory;
-use Zestic\GraphQL\Locator\MutationBusLocator;
-use Zestic\GraphQL\Locator\QueryBusLocator;
 
 final class ConfigProcessor
 {
@@ -36,7 +35,7 @@ final class ConfigProcessor
                 MessageHandlerMiddlewareStaticFactory::class,
                 'messenger.graphql.mutation.bus',
             ],
-            MutationBusLocator::class                           =>
+            OneToManyFqcnContainerHandlerLocator::class                           =>
                 new MessengerBusLocatorFactory(
                 'messenger.graphql.mutation.bus'
             ),
@@ -122,7 +121,7 @@ final class ConfigProcessor
     {
         return [
             'allows_zero_handlers' => false,
-            'handler_locator'      => MutationBusLocator::class,
+            'handler_locator'      => OneToManyFqcnContainerHandlerLocator::class,
             'handlers'             => $this->mutationHandlersConfig($config),
             'middleware'           => [
                 'messenger.graphql.mutation.bus.sender-middleware',
