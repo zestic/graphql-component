@@ -18,7 +18,7 @@
     "laminas/laminas-diactoros": "^2.6",
     "netglue/laminas-messenger": "^2.0",
     "zestic/contracts": "^0.2",
-    "zestic/webonxy-middleware": "^0.7"
+    "zestic/webonxy-middleware": "^0.8"
   },
   "require-dev": {
     "codeception/codeception": "^4.1.6",
