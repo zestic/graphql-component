@@ -25,7 +25,12 @@ final class RequestDispatcher
         $operation = $message->getOperation();
         $bus = $this->messages[$operation]['bus'];
 
-        return $this->buses[$bus]->dispatch($message);
+        $command = $this->buses[$bus]->dispatch($message);
+        if (isset($this->buses['event'])) {
+            $this->buses['event']->dispatch($command);
+        }
+
+        return $command;
     }
 
     public function handle(ResolveInfo $info, $context)

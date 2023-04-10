@@ -19,6 +19,9 @@ final class RequestDispatcherFactory
         foreach ($busList as $bus) {
             $buses[$bus] = $container->get($bus);
         }
+        if (isset($config['eventBus'])) {
+            $buses['event'] = $container->get($config['eventBus']);
+        }
 
         return new RequestDispatcher($buses, $messages);
     }
