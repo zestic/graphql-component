@@ -41,7 +41,31 @@ final class RequestDispatcher
     {
         $operation = $info->fieldName;
         if (!isset($this->messages[$operation])) {
-            return null;
+            $operationType =
+                match ($info->operation->operation)
+                    {
+                        'mutation'     => 'mutations',
+                        'query'        => 'queries',
+                        'subscription' => 'subscriptions',
+                    };
+            $pascalCaseOperation = ucfirst($operation);
+            $pascalCaseType = ucfirst($info->operation->operation);
+            $message = <<<MESSAGE
+Unmapped operation: {$operation}. 
+Add the message and handlers to graphql.global.php
+Example:
+return [
+    'graphQL' => [
+        '{$operationType}'    => [
+            '{$operation}'      => [
+                'handlers' => \App\Handler\\{$pascalCaseType}\\{$pascalCaseOperation}Handler::class,
+                'message'  => \App\Message\\{$pascalCaseType}\\{$pascalCaseOperation}Message::class,
+            ],
+        ],
+    ],
+];
+MESSAGE;
+            throw new \Exception($message);
         }
         $messageClass = $this->messages[$operation]['message'];
 
