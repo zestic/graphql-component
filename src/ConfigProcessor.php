@@ -6,8 +6,9 @@ namespace Zestic\GraphQL;
 use Netglue\PsrContainer\Messenger\Container\MessageBusStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageHandlerMiddlewareStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageSenderMiddlewareStaticFactory;
-use Netglue\PsrContainer\Messenger\HandlerLocator\OneToManyFqcnContainerHandlerLocator;
 use Zestic\GraphQL\Locator\MessengerBusLocatorFactory;
+use Zestic\GraphQL\Locator\MutationBusLocator;
+use Zestic\GraphQL\Locator\QueryBusLocator;
 
 final class ConfigProcessor
 {
@@ -35,10 +36,10 @@ final class ConfigProcessor
                 MessageHandlerMiddlewareStaticFactory::class,
                 'messenger.graphql.mutation.bus',
             ],
-            OneToManyFqcnContainerHandlerLocator::class                           =>
+            MutationBusLocator::class                           =>
                 new MessengerBusLocatorFactory(
-                'messenger.graphql.mutation.bus'
-            ),
+                    'messenger.graphql.mutation.bus'
+                ),
             'messenger.graphql.query.bus'                    => [
                 MessageBusStaticFactory::class,
                 'messenger.graphql.query.bus',
@@ -53,8 +54,8 @@ final class ConfigProcessor
             ],
             QueryBusLocator::class                           =>
                 new MessengerBusLocatorFactory(
-                'messenger.graphql.query.bus'
-            ),
+                    'messenger.graphql.query.bus'
+                ),
             \Zestic\GraphQL\Handler\RequestDispatcher::class =>
                 \Zestic\GraphQL\Factory\RequestDispatcherFactory::class,
             \Zestic\GraphQL\Resolver\MasterResolver::class   =>
@@ -121,7 +122,7 @@ final class ConfigProcessor
     {
         return [
             'allows_zero_handlers' => false,
-            'handler_locator'      => OneToManyFqcnContainerHandlerLocator::class,
+            'handler_locator'      => MutationBusLocator::class,
             'handlers'             => $this->mutationHandlersConfig($config),
             'middleware'           => [
                 'messenger.graphql.mutation.bus.sender-middleware',
