@@ -20,10 +20,6 @@
     "zestic/contracts": "^0.2",
     "zestic/webonxy-middleware": "^0.9"
   },
-  "require-dev": {
-    "codeception/codeception": "^4.1.6",
-    "codeception/module-asserts": "^1.0.0"
-  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
@@ -36,5 +32,8 @@
       "Tests\\Functional\\": "tests/functional",
       "Tests\\Unit\\": "tests/unit"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10"
   }
 }
