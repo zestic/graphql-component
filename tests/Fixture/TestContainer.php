@@ -21,7 +21,7 @@ class TestContainer implements ContainerInterface
      *
      * @return mixed Entry.
      */
-    public function get($id)
+    public function get(string $id)
     {
         return $this->data[$id];
     }
@@ -37,12 +37,12 @@ class TestContainer implements ContainerInterface
      *
      * @return bool
      */
-    public function has($id)
+    public function has(string $id): bool
     {
         return isset($this->data[$id]);
     }
 
-    public function set($id, $data)
+    public function set(string $id, $data)
     {
         $this->data[$id] = $data;
     }

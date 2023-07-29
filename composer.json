@@ -11,13 +11,16 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^8.0",
+    "php": "^8.2",
     "firebase/php-jwt": "6.1.0",
+    "laminas/laminas-diactoros": "^2.6",
+    "laminas/laminas-servicemanager": "^3.21.x-dev",
+    "netglue/laminas-messenger": "^2.0",
     "psr/container": "^1.0 || ^2.0",
     "psr/log": "^2.0 || ^3.0",
-    "laminas/laminas-diactoros": "^2.6",
-    "netglue/laminas-messenger": "^2.0",
+    "symfony/finder": "^6.3",
     "zestic/contracts": "^0.2",
+    "zestic/app-library": "^v0.11.3",
     "zestic/webonxy-middleware": "^0.9"
   },
   "minimum-stability": "dev",
@@ -28,12 +31,25 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Fixture\\": "tests/_support/Fixture",
-      "Tests\\Functional\\": "tests/functional",
+      "Tests\\Fixture\\": "tests/Fixture",
       "Tests\\Unit\\": "tests/unit"
     }
   },
   "require-dev": {
     "phpunit/phpunit": "^10"
+  },
+  "repositories": {
+    "laminas/laminas-config": {
+      "type": "vcs",
+      "url": "git@github.com:zestic/laminas-config.git"
+    },
+    "laminas/laminas-di": {
+      "type": "vcs",
+      "url": "git@github.com:zestic/laminas-di.git"
+    },
+    "laminas/laminas-servicemanager": {
+      "type": "vcs",
+      "url": "git@github.com:zestic/laminas-servicemanager.git"
+    }
   }
 }
