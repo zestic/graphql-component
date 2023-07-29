@@ -6,6 +6,7 @@ namespace Zestic\GraphQL;
 use Netglue\PsrContainer\Messenger\Container\MessageBusStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageHandlerMiddlewareStaticFactory;
 use Netglue\PsrContainer\Messenger\Container\Middleware\MessageSenderMiddlewareStaticFactory;
+use Zestic\GraphQL\Interactor\AutoWireMessages;
 use Zestic\GraphQL\Locator\MessengerBusLocatorFactory;
 use Zestic\GraphQL\Locator\MutationBusLocator;
 use Zestic\GraphQL\Locator\QueryBusLocator;
@@ -89,6 +90,7 @@ final class ConfigProcessor
             'messenger.graphql.mutation.bus' => $this->mutationConfig($config),
             'messenger.graphql.query.bus'    => $this->queryConfig($config),
         ];
+
         if ($config['symfony']['messenger']['buses']) {
             $buses = array_merge($config['symfony']['messenger']['buses'], $buses);
         }
@@ -135,7 +137,9 @@ final class ConfigProcessor
 
     private function mutationHandlersConfig(array $config): array
     {
-        return $this->getHandlers($config['graphQL']['mutations']);
+        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+
+        return array_merge($autoWiredHandlers, $this->getHandlers($config['graphQL']['mutations']));
     }
 
     private function queryConfig(array $config): array

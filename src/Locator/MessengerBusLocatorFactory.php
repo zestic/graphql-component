@@ -11,7 +11,7 @@ use Psr\Container\ContainerInterface;
 final class MessengerBusLocatorFactory implements FactoryInterface
 {
     public function __construct(
-        private string $busIdentifier,
+        private readonly string $busIdentifier,
     ) { }
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
