@@ -48,6 +48,7 @@ class AutoWireMessages
                 return true;
             }
         }
+
         return false;
     }
 
@@ -59,18 +60,23 @@ class AutoWireMessages
     private static function findHandlersInDirectories(string $message, array $directories): array
     {
         $handlers = [];
-        $finder = new Finder();
-        $finder
-            ->in($directories)
-            ->name('*.php');
-        foreach ($finder->files()->contains($message) as $fileInfo) {
-            try {
-                $classname = self::getFQCNFromFileInfo($fileInfo);
-                if (self::classHandlesMessage($classname, $message)) {
-                    $handlers[$message][] = $classname;
-                }
-            } catch (\Exception $e) {
+        foreach ($directories as $directory) {
+            if (!is_dir($directory)) {
                 continue;
+            }
+            $finder = new Finder();
+            $finder
+                ->in($directory)
+                ->name('*.php');
+            foreach ($finder->files()->contains($message) as $fileInfo) {
+                try {
+                    $classname = self::getFQCNFromFileInfo($fileInfo);
+                    if (self::classHandlesMessage($classname, $message)) {
+                        $handlers[] = $classname;
+                    }
+                } catch (\Exception $e) {
+                    continue;
+                }
             }
         }
 
@@ -81,7 +87,7 @@ class AutoWireMessages
      * @param string[] $messages
      * @param array $namespaces
      *
-     * @return array
+     * @return string[]
      */
     private static function findHandlersForMessages(array $messages, array $namespaces): array
     {
@@ -91,7 +97,7 @@ class AutoWireMessages
         }
         $handlers = [];
         foreach ($messages as $message) {
-            $handlers = array_merge($handlers, self::findHandlersInDirectories($message, $directories));
+            $handlers[$message] = self::findHandlersInDirectories($message, $directories);
         }
 
         return $handlers;
@@ -111,6 +117,9 @@ class AutoWireMessages
     {
         $messages = [];
         foreach ($directories as $directory) {
+            if (!is_dir($directory)) {
+                continue;
+            }
             $finder = new Finder();
             $finder
                 ->in($directory)
@@ -141,13 +150,6 @@ class AutoWireMessages
         }
 
         return $messages;
-    }
-
-    private static function getClassnameFromFile(string $namespace, \SplFileInfo $fileInfo, string $directory): string
-    {
-        $classname = $fileInfo->getFilenameWithoutExtension();
-
-        return "\\{$namespace}{$classname}";
     }
 
     private static function getFQCNFromFileInfo(\SplFileInfo $fileInfo): string
