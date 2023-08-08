@@ -159,6 +159,8 @@ final class ConfigProcessor
 
     private function queryHandlersConfig(array $config): array
     {
-        return $this->getHandlers($config['graphQL']['queries']);
+        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLQueryMessageInterface::class);
+
+        return array_merge($autoWiredHandlers, $this->getHandlers($config['graphQL']['queries']));
     }
 }
