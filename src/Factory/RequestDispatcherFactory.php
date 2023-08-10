@@ -15,6 +15,7 @@ final class RequestDispatcherFactory
         [$queries, $queryBuses] = $this->normalizeConfig($config['queries'], $config['buses']['query']);
         $messages = array_merge($mutations, $queries);
         $busList = array_merge($mutationBuses, $queryBuses);
+
         $buses = [];
         foreach ($busList as $bus) {
             $buses[$bus] = $container->get($bus);

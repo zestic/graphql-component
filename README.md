@@ -1,12 +1,21 @@
-GraphQL Component
-=================
+GraphQL Messenger Component
+===========================
 
 Bridge between Webonxy and Symfony Messenger
 
 All messages must extend GraphQLMessage
 
-Config
+***
+There is a new auto wire feature that needs refactoring. For now, have your
+`ConfigAggregator::ENABLE_CACHE` set to `true`.
+```php
+    ConfigAggregator::ENABLE_CACHE => true,
 ```
+
+***
+For everything not autowired, it can be added manually.
+Config
+```php
 'graphQL'      => [
     'mutations'    => [
         'addEmailToList'   => App\Domain\Message\Mutation\AddEmailToListMessage::class,
