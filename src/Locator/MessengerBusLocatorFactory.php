@@ -14,7 +14,7 @@ final class MessengerBusLocatorFactory implements FactoryInterface
         private readonly string $busIdentifier,
     ) { }
 
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): mixed
     {
         $options = Util::messageBusOptions($container, $this->busIdentifier);
 

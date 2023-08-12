@@ -5,6 +5,7 @@ namespace Zestic\GraphQL\Handler;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Symfony\Component\Messenger\Envelope;
+use Zestic\GraphQL\GraphQLEvent;
 use Zestic\GraphQL\GraphQLMessage;
 
 final class RequestDispatcher
@@ -27,7 +28,7 @@ final class RequestDispatcher
 
         $command = $this->buses[$bus]->dispatch($message);
         if (isset($this->buses['event'])) {
-            $this->buses['event']->dispatch($command);
+            $this->launchEvent($command);
         }
 
         return $command;
@@ -57,7 +58,8 @@ final class RequestDispatcher
             $pascalCaseType = ucfirst($info->operation->operation);
             $message = <<<MESSAGE
 Unmapped operation: {$operation}. 
-Add the message and handlers to graphql.global.php
+Add the message and handlers to graphql.global.php or implement GraphQL{$pascalCaseType}MessageInterface in 
+{$pascalCaseOperation}Message
 Example:
 return [
     'graphQL' => [
@@ -75,5 +77,15 @@ MESSAGE;
         $messageClass = $this->messages[$operation]['message'];
 
         return new $messageClass($info, $context);
+    }
+
+    protected function launchEvent(Envelope $envelope): void
+    {
+        $message = $envelope->getMessage();
+        if (!$message->hasEvent()) {
+            return;
+        }
+        $event = $message->getEvent();
+        $this->buses['event']->dispatch($event, $event->getStamps());
     }
 }
