@@ -6,7 +6,7 @@ Bridge between Webonxy and Symfony Messenger
 All messages must extend GraphQLMessage
 
 ***
-There is a new auto wire feature that needs refactoring. For now, have your
+There is a new auto wire feature It can cause your request to take several seconds. You'll need to make sure you have
 `ConfigAggregator::ENABLE_CACHE` set to `true`.
 ```php
     ConfigAggregator::ENABLE_CACHE => true,
