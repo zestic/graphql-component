@@ -21,7 +21,10 @@ class AutoWireMessagesTest extends TestCase
     private function expected(): array
     {
         return [
-            TestMutationMessage::class => [TestMutationHandler::class],
+            'testMutation' => [
+                'message' => TestMutationMessage::class,
+                'handlers' => [TestMutationHandler::class],
+            ],
         ];
     }
 }

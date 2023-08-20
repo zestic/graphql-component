@@ -13,11 +13,14 @@ class AutoWireMessages
 
     public static function findHandlersForInterface(string $interface): array
     {
-        self::loadFilePaths();
+        if (empty(self::$files)) {
+            self::loadFilePaths();
+        }
 
-        $messages = self::findMessagesForInterface($interface);
+        $operations = self::findOperationsAndMessagesForInterface($interface);
+        self::addHandlersToOperations($operations);
 
-        return self::findHandlersForMessages($messages);
+        return $operations;
     }
 
     public static function getMutationHandlers(): array
@@ -71,31 +74,29 @@ class AutoWireMessages
         return $handlers;
     }
 
-    private static function findHandlersForMessages(array $messages): array
+    private static function addHandlersToOperations(array &$operations): void
     {
-        $handlers = [];
-        foreach ($messages as $message) {
-            $handlers[$message] = self::findHandlersForMessage($message);
+        foreach ($operations as $operationName => $operation) {
+            $operations[$operationName]['handlers'] = self::findHandlersForMessage($operation['message']);
         }
-
-        return $handlers;
     }
 
-    private static function findMessagesForInterface(string $interface): array
+    private static function findOperationsAndMessagesForInterface(string $interface): array
     {
-        $messages = [];
+        $operations = [];
         foreach (self::$files as $index => $file) {
             $content = file_get_contents($file);
             if (str_contains($content, $interface)) {
                 $classname = self::getFQCNFromFile($file);
                 if (self::classImplementsInterface($classname, $interface)) {
-                    $messages[] = $classname;
+                    $operation = self::getOperationFromClassName($classname);
+                    $operations[$operation]['message'] = $classname;
                     unset(self::$files[$index]);
                 }
             }
         }
 
-        return $messages;
+        return $operations;
     }
 
     private static function getFQCNFromFile(string $filePath): string
@@ -171,5 +172,17 @@ class AutoWireMessages
         if (!empty($subDirectories)) {
             self::scanDirectories($namespace, $subDirectories);
         }
+    }
+
+    private static function getOperationFromClassName(string $className): string
+    {
+        $parts = explode('\\', $className);
+        $operationName = array_pop($parts);
+        $position = strrpos($operationName, 'Message');
+        if ($position!== false) {
+            $operationName = substr($operationName, 0, $position);
+        }
+
+        return lcfirst($operationName);
     }
 }

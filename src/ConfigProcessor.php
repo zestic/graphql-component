@@ -86,6 +86,7 @@ final class ConfigProcessor
 
     private function addBuses(array $config): array
     {
+        $config = $this->autoWireMessages($config); // needs to happen first
         $buses = [
             'messenger.graphql.mutation.bus' => $this->mutationConfig($config),
             'messenger.graphql.query.bus'    => $this->queryConfig($config),
@@ -109,7 +110,7 @@ final class ConfigProcessor
     private function getHandlers(array $operations): array
     {
         $handlers = [];
-        foreach ($operations as $key => $operation) {
+        foreach ($operations as $operation) {
             $operationHandlers = $operation['handlers'];
             if (!is_array($operationHandlers)) {
                 $operationHandlers = [$operationHandlers];
@@ -125,7 +126,7 @@ final class ConfigProcessor
         return [
             'allows_zero_handlers' => false,
             'handler_locator'      => MutationBusLocator::class,
-            'handlers'             => $this->mutationHandlersConfig($config),
+            'handlers'             => $this->getHandlers($config['graphQL']['mutations']),
             'middleware'           => [
                 'messenger.graphql.mutation.bus.sender-middleware',
                 'messenger.graphql.mutation.bus.handler-middleware',
@@ -135,11 +136,15 @@ final class ConfigProcessor
         ];
     }
 
-    private function mutationHandlersConfig(array $config): array
+    private function autoWireMessages(array $config): array
     {
         $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+        $config['graphQL']['mutations'] = array_merge($config['graphQL']['mutations'], $autoWiredHandlers);
 
-        return array_merge($autoWiredHandlers, $this->getHandlers($config['graphQL']['mutations']));
+        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLQueryMessageInterface::class);
+        $config['graphQL']['queries'] = array_merge($config['graphQL']['queries'], $autoWiredHandlers);
+
+        return $config;
     }
 
     private function queryConfig(array $config): array
@@ -147,7 +152,7 @@ final class ConfigProcessor
         return [
             'allows_zero_handlers' => false,
             'handler_locator'      => QueryBusLocator::class,
-            'handlers'             => $this->queryHandlersConfig($config),
+            'handlers'             => $this->getHandlers($config['graphQL']['queries']),
             'middleware'           => [
                 'messenger.graphql.query.bus.sender-middleware',
                 'messenger.graphql.query.bus.handler-middleware',
@@ -155,12 +160,5 @@ final class ConfigProcessor
             'routes'               => [
             ],
         ];
-    }
-
-    private function queryHandlersConfig(array $config): array
-    {
-        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLQueryMessageInterface::class);
-
-        return array_merge($autoWiredHandlers, $this->getHandlers($config['graphQL']['queries']));
     }
 }
