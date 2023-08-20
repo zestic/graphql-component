@@ -158,7 +158,7 @@ class AutoWireMessages
                     while (($file = readdir($dh)) !== false) {
                         $filePath = $directory . '/' . $file;
                         $info = pathinfo($filePath);
-                        if ($info['extension'] === 'php') {
+                        if (isset($info['extension']) && $info['extension'] === 'php') {
                             self::$files[] = realpath($filePath);
                         };
                         if ($info['basename'] === $info['filename']) {
