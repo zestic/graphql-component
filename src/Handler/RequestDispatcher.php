@@ -5,20 +5,16 @@ namespace Zestic\GraphQL\Handler;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Symfony\Component\Messenger\Envelope;
-use Zestic\GraphQL\GraphQLEvent;
 use Zestic\GraphQL\GraphQLMessage;
+use Zestic\GraphQL\MessageProcessorInterface;
 
 final class RequestDispatcher
 {
-    /** @var array */
-    private $buses;
-    /** @var array */
-    private $messages;
-
-    public function __construct(array $buses, array $messages)
-    {
-        $this->buses = $buses;
-        $this->messages = $messages;
+    public function __construct(
+        private array $buses,
+        private array $messages,
+        private MessageProcessorInterface $messageProcessor,
+    ) {
     }
 
     public function dispatch(GraphQLMessage $message): Envelope
@@ -75,8 +71,10 @@ MESSAGE;
             throw new \Exception($message);
         }
         $messageClass = $this->messages[$operation]['message'];
+        $message = new $messageClass($info, $context);
+        $this->messageProcessor->process($message);
 
-        return new $messageClass($info, $context);
+        return $message;
     }
 
     protected function launchEvent(Envelope $envelope): void

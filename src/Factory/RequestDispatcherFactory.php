@@ -5,6 +5,7 @@ namespace Zestic\GraphQL\Factory;
 
 use Psr\Container\ContainerInterface;
 use Zestic\GraphQL\Handler\RequestDispatcher;
+use Zestic\GraphQL\Interactor\NullMessageProcessor;
 
 final class RequestDispatcherFactory
 {
@@ -23,8 +24,10 @@ final class RequestDispatcherFactory
         if (isset($config['eventBus'])) {
             $buses['event'] = $container->get($config['eventBus']);
         }
+        $messageProcessorClass = $config['messageProcessor']?? NullMessageProcessor::class;
+        $messageProcessor = $container->get($messageProcessorClass);
 
-        return new RequestDispatcher($buses, $messages);
+        return new RequestDispatcher($buses, $messages, $messageProcessor);
     }
 
     private function normalizeConfig(array $configs, string $defaultBus): array
