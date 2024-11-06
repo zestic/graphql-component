@@ -20,7 +20,7 @@
     "psr/log": "^2.0 || ^3.0",
     "zestic/contracts": "^0.2",
     "zestic/app-library": "^v0.13.0",
-    "zestic/webonxy-middleware": "^0.9"
+    "zestic/webonxy-middleware": "^1.0"
   },
   "minimum-stability": "dev",
   "autoload": {
