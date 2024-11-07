@@ -11,9 +11,23 @@ use PHPUnit\Framework\TestCase;
 
 class AutoWireMessagesTest extends TestCase
 {
-    public function testFindHandlersForInterface(): void
+
+    public function testFindHandlersForInterface(): true
     {
         $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+
+        $this->assertEquals($this->expected(), $handlers);
+
+        return true;
+    }
+
+    /**
+     * @depends testFindHandlersForInterface
+     */
+    public function testFindHandlersForInterfaceWithDirectoriesSet(): void
+    {
+        $directories = [__DIR__.'/../../Fixture'];
+        $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class, $directories);
 
         $this->assertEquals($this->expected(), $handlers);
     }

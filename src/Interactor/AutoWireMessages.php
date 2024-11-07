@@ -9,13 +9,11 @@ use Zestic\GraphQL\GraphQLQueryMessageInterface;
 
 class AutoWireMessages
 {
-    private static array $files;
+    private static array $files = [];
 
-    public static function findHandlersForInterface(string $interface): array
+    public static function findHandlersForInterface(string $interface, array $directories = []): array
     {
-        if (empty(self::$files)) {
-            self::loadFilePaths();
-        }
+        self::setUpFiles($directories);
 
         $operations = self::findOperationsAndMessagesForInterface($interface);
         self::addHandlersToOperations($operations);
@@ -23,14 +21,14 @@ class AutoWireMessages
         return $operations;
     }
 
-    public static function getMutationHandlers(): array
+    public static function getMutationHandlers(array $directories = []): array
     {
-        return self::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+        return self::findHandlersForInterface(GraphQLMutationMessageInterface::class, $directories);
     }
 
-    public static function getQueryHandlers(): array
+    public static function getQueryHandlers(array $directories = []): array
     {
-        return self::findHandlersForInterface(GraphQLQueryMessageInterface::class);
+        return self::findHandlersForInterface(GraphQLQueryMessageInterface::class, $directories);
     }
 
     private static function classHandlesMessage(string $classname, string $message): bool
@@ -144,12 +142,12 @@ class AutoWireMessages
             $namespaces = array_merge($namespaces, $loader->getPrefixesPsr4());
         }
 
-        foreach ($namespaces as $namespace => $directories) {
-            self::scanDirectories($namespace, $directories);
+        foreach ($namespaces as $directories) {
+            self::scanDirectories($directories);
         }
     }
 
-    private static function scanDirectories(string $namespace, array $directories): void
+    private static function scanDirectories(array $directories): void
     {
         $subDirectories = [];
         foreach ($directories as $directory) {
@@ -170,7 +168,7 @@ class AutoWireMessages
             }
         }
         if (!empty($subDirectories)) {
-            self::scanDirectories($namespace, $subDirectories);
+            self::scanDirectories($subDirectories);
         }
     }
 
@@ -184,5 +182,16 @@ class AutoWireMessages
         }
 
         return lcfirst($operationName);
+    }
+
+    private static function setUpFiles(array $directories = []): void
+    {
+        if (!empty($directories)) {
+            self::scanDirectories($directories);
+        }
+
+        if (empty(self::$files)) {
+            self::loadFilePaths();
+        }
     }
 }
