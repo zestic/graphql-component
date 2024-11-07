@@ -63,6 +63,13 @@ class AutoWireMessagesTest extends TestCase
         $this->assertEquals($this->expectedQueryConfig(), $queryHandlers);
     }
 
+    public function testGetQueryHandlersWithEmptySetDirectories(): void
+    {
+        AutoWireMessages::setDirectories([]);
+        $queryHandlers = AutoWireMessages::getQueryHandlers();
+        $this->assertEquals($this->expectedQueryConfig(), $queryHandlers);
+    }
+
     private function expectedMutationConfig(): array
     {
         return [
