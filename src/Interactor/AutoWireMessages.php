@@ -21,14 +21,20 @@ class AutoWireMessages
         return $operations;
     }
 
-    public static function getMutationHandlers(array $directories = []): array
+    public static function getMutationHandlers(): array
     {
-        return self::findHandlersForInterface(GraphQLMutationMessageInterface::class, $directories);
+        return self::findHandlersForInterface(GraphQLMutationMessageInterface::class);
     }
 
-    public static function getQueryHandlers(array $directories = []): array
+    public static function getQueryHandlers(): array
     {
-        return self::findHandlersForInterface(GraphQLQueryMessageInterface::class, $directories);
+        return self::findHandlersForInterface(GraphQLQueryMessageInterface::class);
+    }
+
+    public static function setDirectories(array $directories): void
+    {
+        self::$files = [];
+        self::scanDirectories($directories);
     }
 
     private static function classHandlesMessage(string $classname, string $message): bool

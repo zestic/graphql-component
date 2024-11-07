@@ -5,18 +5,27 @@ namespace Tests\Unit\Interactor;
 
 use Tests\Fixture\Handler\TestMutationHandler;
 use Tests\Fixture\Message\TestMutationMessage;
+use Tests\Fixture\Handler\TestQueryHandler;
+use Tests\Fixture\Message\TestQueryMessage;
 use Zestic\GraphQL\GraphQLMutationMessageInterface;
 use Zestic\GraphQL\Interactor\AutoWireMessages;
 use PHPUnit\Framework\TestCase;
 
 class AutoWireMessagesTest extends TestCase
 {
+    private string $fixtureDirectory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->fixtureDirectory = __DIR__ . '/../../Fixture';
+    }
 
     public function testFindHandlersForInterface(): true
     {
         $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
 
-        $this->assertEquals($this->expected(), $handlers);
+        $this->assertEquals($this->expectedMutationConfig(), $handlers);
 
         return true;
     }
@@ -26,18 +35,49 @@ class AutoWireMessagesTest extends TestCase
      */
     public function testFindHandlersForInterfaceWithDirectoriesSet(): void
     {
-        $directories = [__DIR__.'/../../Fixture'];
+        $directories = [$this->fixtureDirectory];
         $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class, $directories);
 
-        $this->assertEquals($this->expected(), $handlers);
+        $this->assertEquals($this->expectedMutationConfig(), $handlers);
     }
 
-    private function expected(): array
+    public function testSetUpFilesAndFindHandlersForInterface(): void
+    {
+        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
+        $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+
+        $this->assertEquals($this->expectedMutationConfig(), $handlers);
+    }
+
+    public function testGetMutationHandlers(): void
+    {
+        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
+        $mutationHandlers = AutoWireMessages::getMutationHandlers();
+        $this->assertEquals($this->expectedMutationConfig(), $mutationHandlers);
+    }
+
+    public function testGetQueryHandlers(): void
+    {
+        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
+        $queryHandlers = AutoWireMessages::getQueryHandlers();
+        $this->assertEquals($this->expectedQueryConfig(), $queryHandlers);
+    }
+
+    private function expectedMutationConfig(): array
     {
         return [
             'testMutation' => [
                 'message' => TestMutationMessage::class,
                 'handlers' => [TestMutationHandler::class],
+            ],
+        ];
+    }
+    private function expectedQueryConfig(): array
+    {
+        return [
+            'testQuery' => [
+                'message' => TestQueryMessage::class,
+                'handlers' => [TestQueryHandler::class],
             ],
         ];
     }
