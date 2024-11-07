@@ -3,6 +3,6 @@ declare(strict_types=1);
 
 namespace Zestic\GraphQL;
 
-interface GraphQLQueryMessageInterface
+interface GraphQLQueryMessageInterface extends GraphQLMessageInterface
 {
 }

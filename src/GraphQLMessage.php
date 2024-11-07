@@ -8,7 +8,7 @@ use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ResolveInfo;
 use Zestic\GraphQL\ExpectedReturn\Field;
 
-abstract class GraphQLMessage
+abstract class GraphQLMessage implements GraphQLMessageInterface
 {
     protected ?string $errorResponse = null;
     protected ?string $eventClass = null;

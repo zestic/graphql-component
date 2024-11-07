@@ -6,5 +6,5 @@ namespace Zestic\GraphQL;
 
 interface MessageProcessorInterface
 {
-    public function process(GraphQLMessage $message): void;
+    public function process(GraphQLMessageInterface $message): void;
 }
