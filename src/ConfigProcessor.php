@@ -138,10 +138,12 @@ final class ConfigProcessor
 
     private function autoWireMessages(array $config): array
     {
-        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
+        $directories = $config['graphQL']['messageAutoWire']['directories']?? [];
+        AutoWireMessages::setDirectories($directories);
+        $autoWiredHandlers = AutoWireMessages::getMutationHandlers();
         $config['graphQL']['mutations'] = array_merge($config['graphQL']['mutations'], $autoWiredHandlers);
 
-        $autoWiredHandlers = AutoWireMessages::findHandlersForInterface(GraphQLQueryMessageInterface::class);
+        $autoWiredHandlers = AutoWireMessages::getQueryHandlers();
         $config['graphQL']['queries'] = array_merge($config['graphQL']['queries'], $autoWiredHandlers);
 
         return $config;
