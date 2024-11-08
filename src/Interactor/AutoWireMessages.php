@@ -5,6 +5,7 @@ namespace Zestic\GraphQL\Interactor;
 
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Zestic\GraphQL\Exception\NoDirectoriesSetException;
 use Zestic\GraphQL\GraphQLMutationMessageInterface;
 use Zestic\GraphQL\GraphQLQueryMessageInterface;
 
@@ -13,9 +14,11 @@ class AutoWireMessages
     private static array $classes = [];
     private static array $handlers = [];
 
-    public static function findHandlersForInterface(string $interface, array $directories = []): array
+    public static function findHandlersForInterface(string $interface): array
     {
-        self::sortClassesFromFiles($directories);
+        if (empty(self::$classes) && empty(self::$handlers)) {
+            throw new NoDirectoriesSetException();
+        }
 
         $operations = self::mapOperationsForInterface($interface);
 
@@ -34,6 +37,8 @@ class AutoWireMessages
 
     public static function setDirectories(array $directories): void
     {
+        self::$classes = [];
+        self::$handlers = [];
         self::scanDirectories($directories);
     }
 
@@ -132,19 +137,6 @@ class AutoWireMessages
         return token_get_all($buffer);
     }
 
-    private static function loadFilePaths(): void
-    {
-        $loaders = ClassLoader::getRegisteredLoaders();
-        $namespaces = [];
-        foreach ($loaders as $loader) {
-            $namespaces = array_merge($namespaces, $loader->getPrefixesPsr4());
-        }
-
-        foreach ($namespaces as $directories) {
-            self::scanDirectories($directories);
-        }
-    }
-
     private static function scanDirectories(array $directories): void
     {
         $subDirectories = [];
@@ -156,6 +148,8 @@ class AutoWireMessages
                         $info = pathinfo($filePath);
                         if (isset($info['extension']) && $info['extension'] === 'php') {
                             self::sortFile($filePath);
+
+                            continue;
                         };
                         if ($info['basename'] === $info['filename']) {
                             $subDirectories[] = $filePath;
@@ -184,7 +178,7 @@ class AutoWireMessages
 
                 return;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\Throwable $e) {
             return;
         }
 
@@ -208,9 +202,6 @@ class AutoWireMessages
         if (!empty($directories)) {
             self::scanDirectories($directories);
         }
-
-        if (empty(self::$classes)) {
-            self::loadFilePaths();
-        }
+        throw new \Exception(self::MISSING_DIRECTORIES_MESSAGE);
     }
 }

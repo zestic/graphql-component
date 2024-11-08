@@ -3,69 +3,86 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Interactor;
 
+use PHPUnit\Framework\TestCase;
 use Tests\Fixture\Handler\TestMutationHandler;
 use Tests\Fixture\Message\TestMutationMessage;
 use Tests\Fixture\Handler\TestQueryHandler;
 use Tests\Fixture\Message\TestQueryMessage;
+use Zestic\GraphQL\Exception\NoDirectoriesSetException;
 use Zestic\GraphQL\GraphQLMutationMessageInterface;
 use Zestic\GraphQL\Interactor\AutoWireMessages;
-use PHPUnit\Framework\TestCase;
 
 class AutoWireMessagesTest extends TestCase
 {
-    private string $fixtureDirectory;
+    private array $directories;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fixtureDirectory = __DIR__ . '/../../Fixture';
-    }
-
-    public function testFindHandlersForInterface(): true
-    {
-        $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
-
-        $this->assertEquals($this->expectedMutationConfig(), $handlers);
-
-        return true;
+        $this->directories = [__DIR__ . '/../../Fixture'];
     }
 
     /**
-     * @depends testFindHandlersForInterface
+     * @test
      */
-    public function testFindHandlersForInterfaceWithDirectoriesSet(): void
+    public function forceOrder(): void
     {
-        $directories = [$this->fixtureDirectory];
-        $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class, $directories);
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @depends forceOrder
+     */
+    public function testFindHandlersForInterfaceWithoutSetDirectories(): void
+    {
+        $this->expectException(NoDirectoriesSetException::class);
+
+        AutoWireMessages::setDirectories([]);
+        AutoWireMessages::getQueryHandlers();
+    }
+
+    /**
+     * @depends forceOrder
+     */
+    public function testFindHandlersForInterfaceWithEmptySetDirectories(): void
+    {
+        $this->expectException(NoDirectoriesSetException::class);
+
+        AutoWireMessages::setDirectories([]);
+        $handlers = AutoWireMessages::findHandlersForInterface(
+            GraphQLMutationMessageInterface::class,
+        );
+    }
+
+    /**
+     * @depends forceOrder
+     */
+    public function testFindHandlersForInterface(): void
+    {
+        AutoWireMessages::setDirectories($this->directories);
+        $handlers = AutoWireMessages::findHandlersForInterface(
+            GraphQLMutationMessageInterface::class,
+        );
 
         $this->assertEquals($this->expectedMutationConfig(), $handlers);
     }
 
-    public function testSetUpFilesAndFindHandlersForInterface(): void
-    {
-        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
-        $handlers = AutoWireMessages::findHandlersForInterface(GraphQLMutationMessageInterface::class);
-
-        $this->assertEquals($this->expectedMutationConfig(), $handlers);
-    }
-
+    /**
+     * @depends forceOrder
+     */
     public function testGetMutationHandlers(): void
     {
-        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
+        AutoWireMessages::setDirectories($this->directories);
         $mutationHandlers = AutoWireMessages::getMutationHandlers();
         $this->assertEquals($this->expectedMutationConfig(), $mutationHandlers);
     }
 
+    /**
+     * @depends forceOrder
+     */
     public function testGetQueryHandlers(): void
     {
-        AutoWireMessages::setDirectories([$this->fixtureDirectory]);
-        $queryHandlers = AutoWireMessages::getQueryHandlers();
-        $this->assertEquals($this->expectedQueryConfig(), $queryHandlers);
-    }
-
-    public function testGetQueryHandlersWithEmptySetDirectories(): void
-    {
-        AutoWireMessages::setDirectories([]);
+        AutoWireMessages::setDirectories($this->directories);
         $queryHandlers = AutoWireMessages::getQueryHandlers();
         $this->assertEquals($this->expectedQueryConfig(), $queryHandlers);
     }
