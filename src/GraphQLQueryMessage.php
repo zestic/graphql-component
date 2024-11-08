@@ -9,7 +9,5 @@ use Zestic\GraphQL\GraphQLQueryMessageInterface;
 
 abstract class GraphQLQueryMessage extends GraphQLMessage implements GraphQLQueryMessageInterface
 {
-    public function __construct()
-    {
-    }
+
 }
