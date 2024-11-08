@@ -4,19 +4,20 @@ declare(strict_types=1);
 namespace Zestic\GraphQL\Interactor;
 
 use Composer\Autoload\ClassLoader;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Zestic\GraphQL\GraphQLMutationMessageInterface;
 use Zestic\GraphQL\GraphQLQueryMessageInterface;
 
 class AutoWireMessages
 {
-    private static array $files = [];
+    private static array $classes = [];
+    private static array $handlers = [];
 
     public static function findHandlersForInterface(string $interface, array $directories = []): array
     {
-        self::setUpFiles($directories);
+        self::sortClassesFromFiles($directories);
 
-        $operations = self::findOperationsAndMessagesForInterface($interface);
-        self::addHandlersToOperations($operations);
+        $operations = self::mapOperationsForInterface($interface);
 
         return $operations;
     }
@@ -33,7 +34,6 @@ class AutoWireMessages
 
     public static function setDirectories(array $directories): void
     {
-        self::$files = [];
         self::scanDirectories($directories);
     }
 
@@ -59,7 +59,7 @@ class AutoWireMessages
     private static function findHandlersForMessage(string $message): array
     {
         $handlers = [];
-        foreach (self::$files as $index => $file) {
+        foreach (self::$classes as $index => $classname) {
             $content = file_get_contents($file);
             if (str_contains($content, $message)) {
                 $classname = self::getFQCNFromFile($file);
@@ -69,8 +69,8 @@ class AutoWireMessages
                     }
                 } catch (\Exception $e) {
                 } finally {
-                    // remove the file to save time looping
-                    unset(self::$files[$index]);
+                    // remove the class to save time looping
+                    unset(self::$classes[$index]);
                 }
             }
         }
@@ -78,25 +78,17 @@ class AutoWireMessages
         return $handlers;
     }
 
-    private static function addHandlersToOperations(array &$operations): void
-    {
-        foreach ($operations as $operationName => $operation) {
-            $operations[$operationName]['handlers'] = self::findHandlersForMessage($operation['message']);
-        }
-    }
-
-    private static function findOperationsAndMessagesForInterface(string $interface): array
+    private static function mapOperationsForInterface(string $interface): array
     {
         $operations = [];
-        foreach (self::$files as $index => $file) {
-            $content = file_get_contents($file);
-            if (str_contains($content, $interface)) {
-                $classname = self::getFQCNFromFile($file);
-                if (self::classImplementsInterface($classname, $interface)) {
-                    $operation = self::getOperationFromClassName($classname);
-                    $operations[$operation]['message'] = $classname;
-                    unset(self::$files[$index]);
-                }
+        foreach (self::$classes as $index => $classname) {
+            if (self::classImplementsInterface($classname, $interface)) {
+                $operation = self::getOperationFromClassName($classname);
+                $operations[$operation] = [
+                    'message' => $classname,
+                    'handlers' => self::$handlers[$classname],
+                ];
+                unset(self::$classes[$index]);
             }
         }
 
@@ -163,7 +155,7 @@ class AutoWireMessages
                         $filePath = $directory . '/' . $file;
                         $info = pathinfo($filePath);
                         if (isset($info['extension']) && $info['extension'] === 'php') {
-                            self::$files[] = realpath($filePath);
+                            self::sortFile($filePath);
                         };
                         if ($info['basename'] === $info['filename']) {
                             $subDirectories[] = $filePath;
@@ -178,6 +170,27 @@ class AutoWireMessages
         }
     }
 
+    private static function sortFile(string $file): void
+    {
+        $classname = self::getFQCNFromFile($file);
+        try {
+            $reflection = new \ReflectionClass($classname);
+            $attributes = $reflection->getAttributes(AsMessageHandler::class);
+            if (!empty($attributes)) {
+                $method = $reflection->getMethod('__invoke');
+                $parameters = $method->getParameters();
+                $message = $parameters[0]->getType()->getName();
+                self::$handlers[$message][] = $classname;
+
+                return;
+            }
+        } catch (\ReflectionException $e) {
+            return;
+        }
+
+        self::$classes[] = $classname;
+    }
+
     private static function getOperationFromClassName(string $className): string
     {
         $parts = explode('\\', $className);
@@ -190,13 +203,13 @@ class AutoWireMessages
         return lcfirst($operationName);
     }
 
-    private static function setUpFiles(array $directories = []): void
+    private static function sortClassesFromFiles(array $directories = []): void
     {
         if (!empty($directories)) {
             self::scanDirectories($directories);
         }
 
-        if (empty(self::$files)) {
+        if (empty(self::$classes)) {
             self::loadFilePaths();
         }
     }
